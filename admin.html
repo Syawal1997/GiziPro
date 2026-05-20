@@ -6,16 +6,13 @@
     <title>Dashboard Admin - GiziPro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
+        // Cek Login: Jika tidak ada session, kembalikan ke login.html
+        if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+        
         tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        utama: '#16a34a', /* Hijau */
-                        aksen: '#facc15', /* Kuning */
-                        dasar: '#ffffff', /* Putih */
-                    }
-                }
-            }
+            theme: { extend: { colors: { utama: '#16a34a', aksen: '#facc15', dasar: '#ffffff' } } }
         }
     </script>
 </head>
@@ -24,109 +21,141 @@
     <!-- Sidebar -->
     <aside class="w-64 bg-gray-900 text-white flex flex-col hidden md:flex shadow-xl z-20">
         <div class="h-16 flex items-center justify-center border-b border-gray-800">
-            <h1 class="text-2xl font-bold text-utama">Gizi<span class="text-white">Pro</span> <span class="text-xs text-aksen align-top">ADMIN</span></h1>
+            <h1 class="text-2xl font-bold text-utama">Gizi<span class="text-white">Pro</span></h1>
         </div>
         <nav class="flex-1 overflow-y-auto py-6">
-            <ul class="space-y-2 px-4">
-                <li><a href="#" class="block px-4 py-3 bg-utama rounded-lg text-white font-bold shadow-md">📊 Dashboard</a></li>
-                <li><a href="#" class="block px-4 py-3 hover:bg-gray-800 rounded-lg text-gray-300 hover:text-white transition font-medium">👥 Kelola Pengguna</a></li>
-                <li><a href="#" class="block px-4 py-3 hover:bg-gray-800 rounded-lg text-gray-300 hover:text-white transition font-medium">🥗 Kelola Resep Menu</a></li>
-                <li><a href="#" class="block px-4 py-3 hover:bg-gray-800 rounded-lg text-gray-300 hover:text-white transition font-medium">💳 Transaksi & Paket</a></li>
-                <li><a href="#" class="block px-4 py-3 hover:bg-gray-800 rounded-lg text-gray-300 hover:text-white transition font-medium">📈 Laporan Gizi</a></li>
-                <li><a href="#" class="block px-4 py-3 hover:bg-gray-800 rounded-lg text-gray-300 hover:text-white transition font-medium">⚙️ Pengaturan</a></li>
+            <ul class="space-y-2 px-4" id="menuList">
+                <li><button onclick="switchTab('dashboard')" id="btn-dashboard" class="w-full text-left px-4 py-3 bg-utama rounded-lg text-white font-bold shadow-md transition menu-btn">📊 Dashboard</button></li>
+                <li><button onclick="switchTab('pengguna')" id="btn-pengguna" class="w-full text-left px-4 py-3 hover:bg-gray-800 rounded-lg text-gray-300 hover:text-white transition font-medium menu-btn">👥 Kelola Pengguna</button></li>
+                <li><button onclick="switchTab('resep')" id="btn-resep" class="w-full text-left px-4 py-3 hover:bg-gray-800 rounded-lg text-gray-300 hover:text-white transition font-medium menu-btn">🥗 Kelola Resep Menu</button></li>
+                <li><button onclick="switchTab('transaksi')" id="btn-transaksi" class="w-full text-left px-4 py-3 hover:bg-gray-800 rounded-lg text-gray-300 hover:text-white transition font-medium menu-btn">💳 Transaksi & Paket</button></li>
+                <li><button onclick="switchTab('laporan')" id="btn-laporan" class="w-full text-left px-4 py-3 hover:bg-gray-800 rounded-lg text-gray-300 hover:text-white transition font-medium menu-btn">📈 Laporan Gizi</button></li>
+                <li><button onclick="switchTab('pengaturan')" id="btn-pengaturan" class="w-full text-left px-4 py-3 hover:bg-gray-800 rounded-lg text-gray-300 hover:text-white transition font-medium menu-btn">⚙️ Pengaturan</button></li>
             </ul>
         </nav>
         <div class="p-4 border-t border-gray-800">
-            <a href="index.html" class="block w-full text-center px-4 py-2 border border-gray-600 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition text-sm">🔙 Ke Landing Page</a>
+            <button onclick="handleLogout()" class="block w-full text-center px-4 py-2 bg-red-600 rounded-lg text-white font-bold hover:bg-red-700 transition">🚪 Logout</button>
         </div>
     </aside>
 
     <!-- Main Content -->
     <main class="flex-1 flex flex-col h-screen overflow-hidden">
-        
         <!-- Topbar -->
         <header class="h-16 bg-white shadow-sm flex items-center justify-between px-8 z-10 border-b border-gray-200">
-            <div class="flex items-center">
-                <!-- Mobile menu button (visual only for this static demo) -->
-                <button class="md:hidden mr-4 text-gray-600 text-2xl">☰</button>
-                <h2 class="text-xl font-bold text-gray-800">Ringkasan Dashboard</h2>
-            </div>
+            <h2 id="pageTitle" class="text-xl font-bold text-gray-800">Ringkasan Dashboard</h2>
             <div class="flex items-center space-x-4">
                 <span class="text-sm font-medium text-gray-600">Halo, Admin Syawal</span>
                 <div class="w-10 h-10 bg-utama text-white rounded-full flex items-center justify-center font-bold shadow-sm">S</div>
             </div>
         </header>
 
-        <!-- Dashboard Content -->
-        <div class="flex-1 overflow-y-auto p-4 md:p-8">
+        <!-- Area Konten Dinamis -->
+        <div class="flex-1 overflow-y-auto p-4 md:p-8 relative">
             
-            <!-- Stats Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <!-- Card 1 -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 border-l-4 border-l-utama hover:shadow-md transition">
-                    <div class="text-gray-500 text-sm font-semibold mb-1 uppercase tracking-wider">Total Pengguna</div>
-                    <div class="text-3xl font-extrabold text-gray-800">1,248</div>
-                    <div class="text-sm text-utama mt-2 font-medium">↑ 12% bulan ini</div>
-                </div>
-                <!-- Card 2 -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 border-l-4 border-l-aksen hover:shadow-md transition">
-                    <div class="text-gray-500 text-sm font-semibold mb-1 uppercase tracking-wider">Paket Aktif (Full Pack)</div>
-                    <div class="text-3xl font-extrabold text-gray-800">856</div>
-                    <div class="text-sm text-utama mt-2 font-medium">↑ 5% bulan ini</div>
-                </div>
-                <!-- Card 3 -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 border-l-4 border-l-blue-500 hover:shadow-md transition">
-                    <div class="text-gray-500 text-sm font-semibold mb-1 uppercase tracking-wider">Pendapatan (Bulan Ini)</div>
-                    <div class="text-3xl font-extrabold text-gray-800">Rp 45.2 Jt</div>
-                    <div class="text-sm text-utama mt-2 font-medium">↑ 8% bulan ini</div>
+            <!-- Konten 1: Dashboard -->
+            <div id="content-dashboard" class="content-section">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-l-utama">
+                        <div class="text-gray-500 text-sm font-semibold mb-1">Total Pengguna</div>
+                        <div class="text-3xl font-extrabold text-gray-800">1,248</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-l-aksen">
+                        <div class="text-gray-500 text-sm font-semibold mb-1">Paket Aktif</div>
+                        <div class="text-3xl font-extrabold text-gray-800">856</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-l-blue-500">
+                        <div class="text-gray-500 text-sm font-semibold mb-1">Pendapatan Bulan Ini</div>
+                        <div class="text-3xl font-extrabold text-gray-800">Rp 45.2 Jt</div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Recent Activity Table -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-                    <h3 class="font-bold text-gray-800 text-lg">Transaksi Terbaru</h3>
-                    <a href="#" class="text-sm font-semibold text-utama hover:underline">Lihat Semua</a>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
-                        <thead class="bg-white text-gray-500 border-b border-gray-100">
-                            <tr>
-                                <th class="px-6 py-4 font-semibold">ID Transaksi</th>
-                                <th class="px-6 py-4 font-semibold">Nama Pengguna</th>
-                                <th class="px-6 py-4 font-semibold">Paket</th>
-                                <th class="px-6 py-4 font-semibold">Tanggal</th>
-                                <th class="px-6 py-4 font-semibold">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-100">
-                            <tr class="hover:bg-gray-50 transition">
-                                <td class="px-6 py-4 font-bold text-gray-900">#TRX-001</td>
-                                <td class="px-6 py-4 font-medium text-gray-700">Budi Santoso</td>
-                                <td class="px-6 py-4"><span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-bold border border-yellow-200">Full Pack</span></td>
-                                <td class="px-6 py-4 text-gray-500">20 Mei 2026</td>
-                                <td class="px-6 py-4"><span class="text-green-600 font-bold flex items-center">● Berhasil</span></td>
-                            </tr>
-                            <tr class="hover:bg-gray-50 transition">
-                                <td class="px-6 py-4 font-bold text-gray-900">#TRX-002</td>
-                                <td class="px-6 py-4 font-medium text-gray-700">Siti Aminah</td>
-                                <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-bold border border-gray-200">Single Pack</span></td>
-                                <td class="px-6 py-4 text-gray-500">20 Mei 2026</td>
-                                <td class="px-6 py-4"><span class="text-green-600 font-bold flex items-center">● Berhasil</span></td>
-                            </tr>
-                            <tr class="hover:bg-gray-50 transition">
-                                <td class="px-6 py-4 font-bold text-gray-900">#TRX-003</td>
-                                <td class="px-6 py-4 font-medium text-gray-700">Andi Wijaya</td>
-                                <td class="px-6 py-4"><span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-bold border border-yellow-200">Full Pack</span></td>
-                                <td class="px-6 py-4 text-gray-500">19 Mei 2026</td>
-                                <td class="px-6 py-4"><span class="text-yellow-500 font-bold flex items-center">● Menunggu</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <!-- Konten 2: Kelola Pengguna -->
+            <div id="content-pengguna" class="content-section hidden">
+                <div class="bg-white p-8 rounded-2xl shadow-sm">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Daftar Pengguna GiziPro</h3>
+                    <p class="text-gray-600 mb-4">Modul ini digunakan untuk menambah, mengedit, dan memblokir akses pengguna.</p>
+                    <div class="bg-gray-100 p-10 rounded-lg border-dashed border-2 border-gray-300 text-center text-gray-500">Tabel Data Pengguna (Belum Terhubung ke Database)</div>
                 </div>
             </div>
-            
+
+            <!-- Konten 3: Kelola Resep Menu -->
+            <div id="content-resep" class="content-section hidden">
+                <div class="bg-white p-8 rounded-2xl shadow-sm">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Katalog Resep & Menu Diet</h3>
+                    <button class="bg-utama text-white px-4 py-2 rounded-md mb-4">+ Tambah Resep Baru</button>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="p-4 border rounded-lg">Salad Ayam Dada (Tinggi Protein)</div>
+                        <div class="p-4 border rounded-lg">Smoothie Pisang Bayam (Rendah Kalori)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Konten 4: Transaksi & Paket -->
+            <div id="content-transaksi" class="content-section hidden">
+                <div class="bg-white p-8 rounded-2xl shadow-sm">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Riwayat Transaksi</h3>
+                    <p class="text-gray-600 mb-4">Persetujuan pembayaran dan riwayat pembelian paket fitur.</p>
+                    <div class="bg-gray-100 p-10 rounded-lg border-dashed border-2 border-gray-300 text-center text-gray-500">Log Transaksi Payment Gateway</div>
+                </div>
+            </div>
+
+            <!-- Konten 5: Laporan Gizi -->
+            <div id="content-laporan" class="content-section hidden">
+                <div class="bg-white p-8 rounded-2xl shadow-sm">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Statistik Kesehatan Pengguna</h3>
+                    <p class="text-gray-600">Analisis rata-rata BMI dan pencapaian target kalori harian dari seluruh pengguna aktif.</p>
+                </div>
+            </div>
+
+            <!-- Konten 6: Pengaturan -->
+            <div id="content-pengaturan" class="content-section hidden">
+                <div class="bg-white p-8 rounded-2xl shadow-sm max-w-lg">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Pengaturan Akun Admin</h3>
+                    <label class="block text-gray-700 font-bold mb-2 mt-4">Username</label>
+                    <input type="text" value="syawal" class="w-full px-4 py-2 border rounded bg-gray-100" disabled>
+                    <label class="block text-gray-700 font-bold mb-2 mt-4">Ubah Password</label>
+                    <input type="password" placeholder="Masukkan password baru" class="w-full px-4 py-2 border rounded">
+                    <button class="mt-4 bg-utama text-white px-6 py-2 rounded">Simpan Perubahan</button>
+                </div>
+            </div>
+
         </div>
     </main>
+
+    <script>
+        // Logika untuk berpindah tab antar menu di sidebar
+        function switchTab(tabId) {
+            // Sembunyikan semua konten
+            document.querySelectorAll('.content-section').forEach(el => el.classList.add('hidden'));
+            // Tampilkan konten yang dipilih
+            document.getElementById('content-' + tabId).classList.remove('hidden');
+
+            // Reset gaya tombol menu
+            document.querySelectorAll('.menu-btn').forEach(btn => {
+                btn.classList.remove('bg-utama', 'text-white', 'shadow-md', 'font-bold');
+                btn.classList.add('hover:bg-gray-800', 'text-gray-300', 'font-medium');
+            });
+            
+            // Set gaya aktif ke tombol yang diklik
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.remove('hover:bg-gray-800', 'text-gray-300', 'font-medium');
+            activeBtn.classList.add('bg-utama', 'text-white', 'shadow-md', 'font-bold');
+
+            // Ubah Judul Header berdasarkan Tab
+            const titles = {
+                'dashboard': 'Ringkasan Dashboard', 'pengguna': 'Kelola Pengguna',
+                'resep': 'Manajemen Resep', 'transaksi': 'Data Transaksi',
+                'laporan': 'Laporan Sistem', 'pengaturan': 'Pengaturan Web'
+            };
+            document.getElementById('pageTitle').innerText = titles[tabId];
+        }
+
+        // Logika untuk Logout
+        function handleLogout() {
+            sessionStorage.removeItem('isLoggedIn'); // Hapus sesi
+            window.location.href = 'index.html'; // Kembali ke Landing Page
+        }
+    </script>
 </body>
 </html>
