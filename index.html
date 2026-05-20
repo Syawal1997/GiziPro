@@ -4,21 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GiziPro - Analisis Kebutuhan Gizi Cerdas</title>
-    <!-- Menggunakan Tailwind CSS via CDN untuk develop online tanpa install lokal -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        utama: '#16a34a', /* Hijau */
-                        aksen: '#facc15', /* Kuning */
-                        dasar: '#ffffff', /* Putih */
-                    }
-                }
-            }
+            theme: { extend: { colors: { utama: '#16a34a', aksen: '#facc15', dasar: '#ffffff' } } }
         }
     </script>
+    <style>
+        /* CSS Animasi untuk Carousel Snap */
+        .carousel-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none; /* Firefox */
+        }
+        .carousel-container::-webkit-scrollbar { display: none; /* Chrome/Safari */ }
+        .carousel-item {
+            flex: 0 0 100%;
+            scroll-snap-align: center;
+        }
+        @media (min-width: 768px) { .carousel-item { flex: 0 0 50%; } }
+        @media (min-width: 1024px) { .carousel-item { flex: 0 0 33.333%; } }
+    </style>
 </head>
 <body class="bg-dasar text-gray-800 font-sans">
     
@@ -26,16 +33,18 @@
     <nav class="bg-utama text-dasar p-4 shadow-md sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center px-4 md:px-0">
             <h1 class="text-2xl font-bold tracking-wide">GiziPro</h1>
-            <a href="admin.html" class="bg-aksen text-gray-900 px-5 py-2 rounded-md font-bold hover:bg-yellow-500 transition shadow">Login Masuk</a>
+            <!-- DIUBAH: Menuju login.html -->
+            <a href="login.html" class="bg-aksen text-gray-900 px-5 py-2 rounded-md font-bold hover:bg-yellow-500 transition shadow">Login Masuk</a>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <header class="bg-green-50 py-20 md:py-32 relative overflow-hidden">
+    <header class="bg-gradient-to-br from-green-50 to-green-100 py-24 md:py-36 relative overflow-hidden">
         <div class="container mx-auto px-4 text-center relative z-10">
-            <h2 class="text-4xl md:text-6xl font-extrabold text-utama mb-6">Hidup Sehat Dimulai<br>dari Gizi yang Tepat</h2>
+            <div class="inline-block bg-green-200 text-utama font-bold px-4 py-1 rounded-full mb-4 text-sm animate-pulse">✨ AI-Powered Nutrition Platform</div>
+            <h2 class="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">Makan Enak, Tetap Sehat<br><span class="text-utama">Biar GiziPro yang Hitung</span></h2>
             <p class="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">Platform pintar untuk menganalisis kebutuhan gizi harianmu, merencanakan menu sehat, dan memantau status kesehatanmu secara real-time.</p>
-            <a href="#" class="inline-block bg-aksen text-gray-900 px-8 py-4 rounded-full text-lg font-bold shadow-lg hover:bg-yellow-400 hover:scale-105 transition transform">Mulai Sekarang</a>
+            <a href="#harga" class="inline-block bg-aksen text-gray-900 px-8 py-4 rounded-full text-lg font-bold shadow-lg hover:bg-yellow-400 hover:scale-105 transition transform">Mulai Program Sehatmu</a>
         </div>
     </header>
 
@@ -47,60 +56,89 @@
                 <p class="text-gray-500 mt-4">Alat lengkap untuk memantau asupan gizi harian Anda.</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Card 1 -->
-                <div class="p-8 border border-green-100 rounded-2xl shadow-sm hover:shadow-xl transition bg-white text-center">
+                <div class="p-8 border border-green-100 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 bg-white text-center cursor-pointer">
                     <div class="w-16 h-16 bg-green-100 text-utama rounded-full flex items-center justify-center text-3xl mx-auto mb-6">📊</div>
-                    <h4 class="text-xl font-bold text-utama mb-3">Analisis Gizi</h4>
-                    <p class="text-gray-600 leading-relaxed">Hitung kebutuhan kalori, protein, lemak, dan karbohidrat harian Anda secara akurat.</p>
+                    <h4 class="text-xl font-bold text-gray-800 mb-3">Analisis Gizi Otomatis</h4>
+                    <p class="text-gray-600 leading-relaxed">Hitung kebutuhan kalori, makro, dan mikro harian Anda secara akurat dalam hitungan detik.</p>
                 </div>
-                <!-- Card 2 -->
-                <div class="p-8 border border-green-100 rounded-2xl shadow-sm hover:shadow-xl transition bg-white text-center">
+                <div class="p-8 border border-green-100 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 bg-white text-center cursor-pointer">
                     <div class="w-16 h-16 bg-green-100 text-utama rounded-full flex items-center justify-center text-3xl mx-auto mb-6">🥗</div>
-                    <h4 class="text-xl font-bold text-utama mb-3">Resep Menu</h4>
-                    <p class="text-gray-600 leading-relaxed">Dapatkan rekomendasi resep menu makanan sehat sesuai preferensi dan kebutuhan gizi Anda.</p>
+                    <h4 class="text-xl font-bold text-gray-800 mb-3">Generator Resep Diet</h4>
+                    <p class="text-gray-600 leading-relaxed">Dapatkan rekomendasi resep menu makanan sehat sesuai preferensi dan pantangan medis Anda.</p>
                 </div>
-                <!-- Card 3 -->
-                <div class="p-8 border border-green-100 rounded-2xl shadow-sm hover:shadow-xl transition bg-white text-center">
+                <div class="p-8 border border-green-100 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 bg-white text-center cursor-pointer">
                     <div class="w-16 h-16 bg-green-100 text-utama rounded-full flex items-center justify-center text-3xl mx-auto mb-6">📈</div>
-                    <h4 class="text-xl font-bold text-utama mb-3">Status Kesehatan</h4>
-                    <p class="text-gray-600 leading-relaxed">Pantau perkembangan status gizi dari waktu ke waktu dengan grafik interaktif.</p>
+                    <h4 class="text-xl font-bold text-gray-800 mb-3">Monitoring Kesehatan</h4>
+                    <p class="text-gray-600 leading-relaxed">Pantau perkembangan berat badan dan status gizi dari waktu ke waktu dengan grafik interaktif.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Carousel Testimonial -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-gray-800">Kata Mereka Tentang GiziPro</h3>
+                <p class="text-gray-500 mt-2">Geser untuk melihat testimoni pengguna kami</p>
+            </div>
+            
+            <div class="carousel-container gap-6 pb-8">
+                <!-- Slide 1 -->
+                <div class="carousel-item p-8 bg-white border border-gray-100 rounded-2xl shadow-sm">
+                    <div class="text-aksen text-2xl mb-4">★★★★★</div>
+                    <p class="text-gray-600 italic mb-6">"Sangat membantu! Saya yang kesulitan mengatur defisit kalori kini bisa memasak menu sehat sendiri berkat GiziPro."</p>
+                    <div class="font-bold text-gray-800">- Anita, 28 Tahun</div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="carousel-item p-8 bg-white border border-gray-100 rounded-2xl shadow-sm">
+                    <div class="text-aksen text-2xl mb-4">★★★★★</div>
+                    <p class="text-gray-600 italic mb-6">"Tampilan dashboardnya sangat rapi dan UI-nya ramah pengguna. Menghitung makro nutrisi jadi sangat menyenangkan!"</p>
+                    <div class="font-bold text-gray-800">- Budi, 34 Tahun</div>
+                </div>
+                <!-- Slide 3 -->
+                <div class="carousel-item p-8 bg-white border border-gray-100 rounded-2xl shadow-sm">
+                    <div class="text-aksen text-2xl mb-4">★★★★★</div>
+                    <p class="text-gray-600 italic mb-6">"Sebagai orang sibuk, fitur resep instan sesuai kalori harian adalah penyelamat hidup saya. Terimakasih GiziPro."</p>
+                    <div class="font-bold text-gray-800">- Clara, 25 Tahun</div>
+                </div>
+                 <!-- Slide 4 -->
+                 <div class="carousel-item p-8 bg-white border border-gray-100 rounded-2xl shadow-sm">
+                    <div class="text-aksen text-2xl mb-4">★★★★★</div>
+                    <p class="text-gray-600 italic mb-6">"Paket Full Pack sangat worth it. Saya bisa merekomendasikan ini ke teman-teman gym saya."</p>
+                    <div class="font-bold text-gray-800">- Dimas, 30 Tahun</div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Pilihan Paket Akses -->
-    <section class="py-20 bg-utama text-dasar">
+    <section id="harga" class="py-20 bg-utama text-dasar">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
                 <h3 class="text-3xl md:text-4xl font-bold mb-4">Pilihan Paket Akses</h3>
                 <p class="text-green-100 text-lg">Investasi terbaik untuk kesehatan Anda dengan harga terjangkau.</p>
             </div>
-            
             <div class="flex flex-col md:flex-row justify-center items-center gap-8 max-w-4xl mx-auto">
-                <!-- Single Pack -->
                 <div class="bg-dasar text-gray-800 rounded-2xl p-8 w-full md:w-1/2 shadow-lg">
                     <h4 class="text-2xl font-bold text-utama mb-2">Single Pack</h4>
                     <p class="text-4xl font-extrabold text-gray-900 mb-6">Rp 25rb <span class="text-base text-gray-500 font-normal">/ 1 Menu</span></p>
-                    <ul class="text-left mb-8 space-y-4">
-                        <li class="flex items-center"><span class="text-utama mr-2">✔️</span> Akses 1 Menu Spesifik</li>
-                        <li class="flex items-center"><span class="text-utama mr-2">✔️</span> Masa Aktif 1 Tahun</li>
-                        <li class="flex items-center"><span class="text-utama mr-2">✔️</span> Update Fitur Gratis</li>
-                        <li class="flex items-center"><span class="text-utama mr-2">✔️</span> Dukungan Prioritas</li>
+                    <ul class="text-left mb-8 space-y-4 font-medium text-gray-700">
+                        <li class="flex items-center"><span class="text-utama mr-3 text-xl">✓</span> Akses 1 Menu Spesifik</li>
+                        <li class="flex items-center"><span class="text-utama mr-3 text-xl">✓</span> Masa Aktif 1 Tahun</li>
+                        <li class="flex items-center"><span class="text-utama mr-3 text-xl">✓</span> Update Fitur Gratis</li>
                     </ul>
                     <a href="#" class="block text-center w-full border-2 border-utama text-utama font-bold py-3 rounded-lg hover:bg-utama hover:text-dasar transition">Pilih Paket</a>
                 </div>
-
-                <!-- Full Pack -->
                 <div class="bg-dasar text-gray-800 rounded-2xl p-8 w-full md:w-1/2 shadow-2xl transform md:scale-105 border-4 border-aksen relative">
                     <div class="absolute top-0 right-0 bg-aksen text-gray-900 text-xs font-bold px-4 py-2 rounded-bl-xl rounded-tr-lg">POPULAR</div>
                     <h4 class="text-2xl font-bold text-utama mb-2">Full Pack</h4>
                     <p class="text-4xl font-extrabold text-gray-900 mb-6">Rp 75rb <span class="text-base text-gray-500 font-normal">/ Full Akses</span></p>
-                    <ul class="text-left mb-8 space-y-4">
-                        <li class="flex items-center"><span class="text-aksen mr-2">⭐</span> Akses SEMUA Menu</li>
-                        <li class="flex items-center"><span class="text-aksen mr-2">⭐</span> Masa Aktif 1 Tahun</li>
-                        <li class="flex items-center"><span class="text-aksen mr-2">⭐</span> Update Fitur Gratis</li>
-                        <li class="flex items-center"><span class="text-aksen mr-2">⭐</span> Dukungan Prioritas</li>
+                    <ul class="text-left mb-8 space-y-4 font-medium text-gray-700">
+                        <li class="flex items-center"><span class="text-aksen mr-3 text-xl">⭐</span> Akses SEMUA Menu</li>
+                        <li class="flex items-center"><span class="text-aksen mr-3 text-xl">⭐</span> Masa Aktif 1 Tahun</li>
+                        <li class="flex items-center"><span class="text-aksen mr-3 text-xl">⭐</span> Update Fitur Gratis</li>
+                        <li class="flex items-center"><span class="text-aksen mr-3 text-xl">⭐</span> Dukungan Prioritas</li>
                     </ul>
                     <a href="#" class="block text-center w-full bg-aksen text-gray-900 font-bold py-3 rounded-lg hover:bg-yellow-500 transition shadow-md">Ambil Promo Ini</a>
                 </div>
@@ -108,8 +146,7 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-400 py-8 text-center">
+    <footer class="bg-gray-900 text-gray-400 py-8 text-center border-t border-gray-800">
         <p>&copy; 2026 GiziPro. Hak Cipta Dilindungi.</p>
     </footer>
 
