@@ -8,120 +8,133 @@
     <script>
         tailwind.config = {
             theme: {
-                extend: { 
-                    colors: { utama: '#10b981', aksen: '#fbbf24', gelap: '#0f172a' },
-                    animation: { 'blob': 'blob 7s infinite' },
-                    keyframes: {
-                        blob: {
-                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
-                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-                            '100%': { transform: 'translate(0px, 0px) scale(1)' }
-                        }
-                    }
-                }
+                extend: { colors: { utama: '#10b981', aksen: '#fbbf24', gelap: '#0f172a' } }
             }
         }
     </script>
-    <style>
-        .carousel-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
-        .carousel-container::-webkit-scrollbar { display: none; }
-        .carousel-item { flex: 0 0 100%; scroll-snap-align: center; }
-        @media (min-width: 768px) { .carousel-item { flex: 0 0 50%; } }
-        @media (min-width: 1024px) { .carousel-item { flex: 0 0 33.333%; } }
-        .glass-nav { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-    </style>
 </head>
-<body class="bg-slate-50 text-gray-800 font-sans relative overflow-x-hidden">
+<body class="bg-slate-50 text-slate-800 font-sans">
 
-    <!-- Efek Latar Belakang Hero -->
-    <div class="absolute top-0 -left-4 w-72 h-72 bg-emerald-300 rounded-full mix-blend-multiply filter blur-2xl opacity-30 animate-blob"></div>
-    <div class="absolute top-0 -right-4 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-2xl opacity-30 animate-blob animation-delay-2000"></div>
-
-    <!-- Glassmorphism Navbar -->
-    <nav class="glass-nav border-b border-white/20 sticky top-0 z-50 transition-all duration-300 shadow-sm">
+    <!-- Navbar -->
+    <nav class="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50 shadow-sm">
         <div class="container mx-auto flex justify-between items-center p-4">
-            <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-utama to-emerald-700 tracking-tight">GiziPro</h1>
-            <a href="login.html" class="bg-gelap text-white px-6 py-2.5 rounded-full font-bold hover:bg-utama hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">Login Admin</a>
+            <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-utama to-emerald-700">GiziPro</h1>
+            <a href="login.html" class="bg-gelap text-white px-6 py-2 rounded-full font-bold hover:bg-utama transition-colors">Login Admin</a>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <header class="relative pt-24 pb-32 md:pt-36 md:pb-48 overflow-hidden">
-        <div class="container mx-auto px-4 text-center relative z-10">
-            <div class="inline-flex items-center gap-2 bg-emerald-100/80 text-utama font-bold px-5 py-2 rounded-full mb-8 text-sm backdrop-blur-sm shadow-sm ring-1 ring-emerald-200/50">
-                <span class="relative flex h-3 w-3"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-utama opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-utama"></span></span>
-                Sistem Cerdas Bertenaga AI
-            </div>
-            <h2 class="text-5xl md:text-7xl font-extrabold text-gelap mb-6 leading-[1.1] tracking-tight">Evolusi Gaya Hidup<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-utama to-yellow-500">Mulai Dari Piringmu</span></h2>
-            <p class="text-lg md:text-xl text-slate-500 mb-10 max-w-2xl mx-auto leading-relaxed">Platform pintar untuk menganalisis kebutuhan gizi, merencanakan menu harian, dan memantau progres kesehatanmu secara real-time.</p>
-            <a href="#harga" class="inline-block bg-gradient-to-r from-utama to-emerald-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl shadow-emerald-500/30 hover:shadow-2xl hover:scale-105 transition-all duration-300">Mulai Program Sehatmu</a>
+    <header class="pt-20 pb-24 text-center">
+        <div class="container mx-auto px-4">
+            <h2 class="text-5xl md:text-6xl font-extrabold text-gelap mb-6">Makan Sehat,<br><span class="text-utama">Hidup Lebih Hebat</span></h2>
+            <p class="text-lg text-slate-500 mb-10 max-w-2xl mx-auto">Platform analisis gizi cerdas yang membantu Anda merencanakan menu, melacak kalori, dan mencapai target kesehatan ideal.</p>
+            <a href="#katalog-resep" class="bg-utama text-white px-8 py-4 rounded-full font-bold shadow-lg shadow-utama/30 hover:scale-105 transition-transform">Lihat Menu Diet</a>
         </div>
     </header>
 
-    <!-- Fitur Unggulan dengan Hover Card Efek -->
-    <section class="py-24 bg-white relative z-20">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-20">
-                <h3 class="text-3xl md:text-5xl font-bold text-gelap">Fitur Unggulan</h3>
-                <p class="text-slate-500 mt-4 text-lg">Semua alat yang Anda butuhkan untuk mencapai target kalori.</p>
+    <!-- Fitur Menarik: Kalkulator BMI Cepat -->
+    <section class="py-16 bg-gradient-to-br from-utama to-emerald-800 text-white relative">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center gap-12">
+            <div class="w-full md:w-1/2">
+                <h3 class="text-3xl font-bold mb-4">Cek Status Gizi Anda (BMI)</h3>
+                <p class="text-emerald-100 mb-6">Gunakan kalkulator cepat kami untuk mengetahui Indeks Massa Tubuh Anda sebelum merencanakan menu diet.</p>
+                <div class="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20">
+                    <div class="flex gap-4 mb-4">
+                        <input type="number" id="berat" placeholder="Berat (kg)" class="w-1/2 px-4 py-3 rounded-xl bg-white text-gelap outline-none">
+                        <input type="number" id="tinggi" placeholder="Tinggi (cm)" class="w-1/2 px-4 py-3 rounded-xl bg-white text-gelap outline-none">
+                    </div>
+                    <button onclick="hitungBMI()" class="w-full bg-aksen text-gelap font-bold py-3 rounded-xl hover:bg-yellow-400 transition">Hitung BMI</button>
+                    <div id="hasilBMI" class="mt-4 text-center font-bold text-xl hidden"></div>
+                </div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <!-- Card 1 -->
-                <div class="group p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:bg-white hover:border-emerald-100 hover:shadow-2xl hover:shadow-emerald-900/5 transition-all duration-500 cursor-pointer">
-                    <div class="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center text-3xl mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">📊</div>
-                    <h4 class="text-xl font-bold text-gelap mb-3">Analisis Presisi</h4>
-                    <p class="text-slate-500 leading-relaxed">Hitung kebutuhan kalori, makro, dan mikro harian Anda secara akurat.</p>
-                </div>
-                <!-- Card 2 -->
-                <div class="group p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:bg-white hover:border-emerald-100 hover:shadow-2xl hover:shadow-emerald-900/5 transition-all duration-500 cursor-pointer">
-                    <div class="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center text-3xl mb-6 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">🥗</div>
-                    <h4 class="text-xl font-bold text-gelap mb-3">Generator Resep</h4>
-                    <p class="text-slate-500 leading-relaxed">Dapatkan rekomendasi makanan sehat harian sesuai preferensi medis.</p>
-                </div>
-                <!-- Card 3 -->
-                <div class="group p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:bg-white hover:border-emerald-100 hover:shadow-2xl hover:shadow-emerald-900/5 transition-all duration-500 cursor-pointer">
-                    <div class="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center text-3xl mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">📈</div>
-                    <h4 class="text-xl font-bold text-gelap mb-3">Monitoring Visual</h4>
-                    <p class="text-slate-500 leading-relaxed">Pantau perkembangan status gizi dengan grafik dan metrik interaktif.</p>
+            
+            <!-- Video YouTube -->
+            <div class="w-full md:w-1/2">
+                <div class="aspect-w-16 aspect-h-9 rounded-2xl overflow-hidden shadow-2xl border-4 border-white/20">
+                    <!-- Menggunakan iframe YouTube terkait edukasi gizi sehat -->
+                    <iframe class="w-full h-64 md:h-80" src="https://www.youtube.com/embed/M-J4mZqAuuA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Pricing Modern -->
-    <section id="harga" class="py-24 bg-gelap text-white relative">
+    <!-- Data Dinamis dari Admin: Katalog Resep -->
+    <section id="katalog-resep" class="py-24 bg-white">
         <div class="container mx-auto px-4">
-            <div class="text-center mb-20">
-                <h3 class="text-4xl md:text-5xl font-bold mb-4">Investasi Kesehatan</h3>
-                <p class="text-slate-400 text-lg">Pilih paket akses yang sesuai dengan komitmen Anda.</p>
+            <div class="text-center mb-16">
+                <h3 class="text-4xl font-bold text-gelap">Katalog Resep (Live Data)</h3>
+                <p class="text-slate-500 mt-2">Daftar menu di bawah ini diperbarui langsung dari Dashboard Admin.</p>
             </div>
-            <div class="flex flex-col md:flex-row justify-center items-center gap-8 max-w-5xl mx-auto">
-                <div class="bg-slate-800/50 backdrop-blur-md rounded-3xl p-10 w-full md:w-1/2 border border-slate-700 hover:border-slate-500 transition-colors">
-                    <h4 class="text-2xl font-bold text-white mb-2">Basic Plan</h4>
-                    <p class="text-5xl font-extrabold text-white mb-8">Rp 25k <span class="text-lg text-slate-400 font-normal">/ akses</span></p>
-                    <ul class="space-y-4 text-slate-300 mb-10">
-                        <li class="flex items-center gap-3">✓ <span class="opacity-90">Analisis 1 Profil Pengguna</span></li>
-                        <li class="flex items-center gap-3">✓ <span class="opacity-90">Akses Resep Terbatas</span></li>
-                        <li class="flex items-center gap-3">✓ <span class="opacity-90">Support Komunitas</span></li>
-                    </ul>
-                    <a href="#" class="block text-center w-full bg-slate-700 text-white font-bold py-4 rounded-xl hover:bg-slate-600 transition">Pilih Basic</a>
-                </div>
-                
-                <div class="bg-gradient-to-b from-utama to-emerald-700 rounded-3xl p-10 w-full md:w-1/2 shadow-2xl shadow-emerald-900/50 transform md:scale-105 relative border border-emerald-400/30">
-                    <div class="absolute -top-4 right-8 bg-aksen text-gelap text-sm font-bold px-4 py-1.5 rounded-full shadow-lg">POPULAR</div>
-                    <h4 class="text-2xl font-bold text-emerald-50 mb-2">Pro Plan</h4>
-                    <p class="text-5xl font-extrabold text-white mb-8">Rp 75k <span class="text-lg text-emerald-200 font-normal">/ lifetime</span></p>
-                    <ul class="space-y-4 text-emerald-50 mb-10 font-medium">
-                        <li class="flex items-center gap-3">⭐ <span>Analisis Profil Unlimited</span></li>
-                        <li class="flex items-center gap-3">⭐ <span>Full Akses Katalog Resep AI</span></li>
-                        <li class="flex items-center gap-3">⭐ <span>Konsultasi Gizi Prioritas</span></li>
-                    </ul>
-                    <a href="#" class="block text-center w-full bg-gelap text-white font-bold py-4 rounded-xl hover:bg-slate-900 hover:shadow-xl transition transform hover:-translate-y-1">Ambil Pro Sekarang</a>
-                </div>
+            <!-- Container untuk merender data dari LocalStorage -->
+            <div id="resepContainer" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Data akan diisi oleh JavaScript -->
             </div>
         </div>
     </section>
 
+    <!-- Footer -->
+    <footer class="bg-gelap text-slate-400 py-12 border-t border-slate-800 text-center md:text-left">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <h2 class="text-2xl font-bold text-white tracking-tight">GiziPro</h2>
+                <p class="text-sm mt-1">Platform Analisis Gizi AI & Data.</p>
+            </div>
+            <div class="flex gap-4">
+                <!-- Sosial Media Icons (SVG) -->
+                <a href="#" class="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-utama hover:text-white transition">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+                </a>
+                <a href="#" class="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-utama hover:text-white transition">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                </a>
+            </div>
+        </div>
+        <div class="mt-8 text-sm opacity-50">
+            &copy; 2026 GiziPro. Dikelola oleh Tim Data & Analitik.
+        </div>
+    </footer>
+
+    <script>
+        // Fitur BMI
+        function hitungBMI() {
+            let berat = document.getElementById('berat').value;
+            let tinggi = document.getElementById('tinggi').value / 100; // ubah ke meter
+            if(berat && tinggi) {
+                let bmi = (berat / (tinggi * tinggi)).toFixed(1);
+                let status = bmi < 18.5 ? 'Kurang Berat Badan ⚠️' : bmi < 25 ? 'Normal ✅' : 'Kelebihan Berat Badan ⚠️';
+                let hasil = document.getElementById('hasilBMI');
+                hasil.innerHTML = `BMI Anda: ${bmi} (${status})`;
+                hasil.classList.remove('hidden');
+            }
+        }
+
+        // Tampilkan Data dari LocalStorage (terhubung dengan CRUD Admin)
+        function renderLandingRecipes() {
+            // Default data jika admin belum mengisi
+            const defaultData = [
+                { id: 1, name: "Salad Sayur Super", cal: "300 kcal", type: "Vegan" },
+                { id: 2, name: "Dada Ayam Panggang", cal: "450 kcal", type: "Tinggi Protein" },
+                { id: 3, name: "Smoothie Buah Naga", cal: "150 kcal", type: "Minuman Diet" }
+            ];
+
+            let db = localStorage.getItem('db_recipes_v2');
+            let recipes = db ? JSON.parse(db) : defaultData;
+            
+            // Simpan default ke storage jika kosong agar admin melihatnya
+            if(!db) localStorage.setItem('db_recipes_v2', JSON.stringify(defaultData));
+
+            const container = document.getElementById('resepContainer');
+            container.innerHTML = recipes.map(r => `
+                <div class="bg-slate-50 border border-slate-100 p-8 rounded-3xl hover:shadow-xl hover:border-utama transition-all cursor-pointer group">
+                    <span class="bg-emerald-100 text-utama text-xs font-bold px-3 py-1 rounded-full mb-4 inline-block">${r.type}</span>
+                    <h4 class="text-xl font-bold text-gelap mb-2 group-hover:text-utama transition">${r.name}</h4>
+                    <p class="text-slate-500 font-medium flex items-center gap-2"><span class="text-aksen">🔥</span> ${r.cal}</p>
+                </div>
+            `).join('');
+        }
+
+        // Panggil fungsi saat web dimuat
+        renderLandingRecipes();
+    </script>
 </body>
 </html>
