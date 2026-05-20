@@ -11,6 +11,17 @@ GiziPro adalah *landing page* dan *dashboard* modern yang dirancang untuk platfo
         *   Password: `syawal123`
 *   **Dashboard SPA (Single Page Application)**: Halaman `admin.html` yang merender konten antar-menu (Dashboard, Pengguna, Resep, Transaksi, Laporan, Pengaturan) secara dinamis tanpa *reload* halaman menggunakan Vanilla JS.
 *   **Keamanan Rute Sederhana**: Script pencegah masuk ke halaman admin apabila sesi belum terdaftar (ter-logout).
+*   **Premium UI/UX**: Menggunakan teknik Tailwind CSS tingkat lanjut seperti Glassmorphism (`backdrop-blur`), animasi gradient blob berjalan, shadow dinamis, dan efek *hover scaling*.
+*   **Simulasi Database (LocalStorage)**: Karena proyek ini di-deploy sebagai *Static Site* di Vercel (yang tidak bisa memproses file `sqlite.db`), sistem menggunakan **LocalStorage API**.
+    *   Fungsi CRUD (Create, Read, Update, Delete) beroperasi dengan sempurna pada menu **Kelola Pengguna** dan **Kelola Resep** di Panel Admin.
+    *   Data tidak akan hilang saat browser di-refresh.
+*   **Dashboard Modern SPA**: Transisi tab super halus tanpa *loading* dengan perhitungan ringkasan data yang merespon perubahan data pengguna/resep secara *real-time*.
+
+## 💾 Catatan Tentang SQLite
+Jika di masa depan Anda ingin menggunakan database **SQLite asli**, Anda harus meng-upgrade *stack* dari HTML Statis menjadi *Framework Backend* seperti:
+1.  **Next.js** (Sangat disarankan jika menggunakan Vercel).
+2.  **Node.js / Express** + Prisma ORM.
+Untuk saat ini, metode *LocalStorage* adalah cara paling cerdas untuk mendemonstrasikan sistem ini bekerja secara *online* tanpa harus mengatur server backend di Vercel.
 
 ## 🛠️ Arsitektur File
 
