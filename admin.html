@@ -3,120 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin - GiziPro</title>
+    <title>Dashboard - GiziPro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        // Cek Login: Jika tidak ada session, kembalikan ke login.html
-        if (sessionStorage.getItem('isLoggedIn') !== 'true') {
-            window.location.href = 'login.html';
-        }
-        
-        tailwind.config = {
-            theme: { extend: { colors: { utama: '#16a34a', aksen: '#facc15', dasar: '#ffffff' } } }
-        }
+        if (sessionStorage.getItem('isLoggedIn') !== 'true') window.location.href = 'login.html';
+        tailwind.config = { theme: { extend: { colors: { utama: '#10b981', gelap: '#0f172a', terang: '#f8fafc' } } } }
     </script>
 </head>
-<body class="bg-gray-100 font-sans flex h-screen overflow-hidden">
+<body class="bg-terang font-sans flex h-screen overflow-hidden text-slate-800">
     
     <!-- Sidebar -->
-    <aside class="w-64 bg-gray-900 text-white flex flex-col hidden md:flex shadow-xl z-20">
-        <div class="h-16 flex items-center justify-center border-b border-gray-800">
-            <h1 class="text-2xl font-bold text-utama">Gizi<span class="text-white">Pro</span></h1>
+    <aside class="w-72 bg-gelap text-white flex flex-col shadow-2xl z-20">
+        <div class="h-20 flex items-center px-8 border-b border-white/10">
+            <h1 class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-utama to-emerald-400">GiziPro <span class="text-xs text-slate-400 align-top">Panel</span></h1>
         </div>
         <nav class="flex-1 overflow-y-auto py-6">
-            <ul class="space-y-2 px-4" id="menuList">
-                <li><button onclick="switchTab('dashboard')" id="btn-dashboard" class="w-full text-left px-4 py-3 bg-utama rounded-lg text-white font-bold shadow-md transition menu-btn">📊 Dashboard</button></li>
-                <li><button onclick="switchTab('pengguna')" id="btn-pengguna" class="w-full text-left px-4 py-3 hover:bg-gray-800 rounded-lg text-gray-300 hover:text-white transition font-medium menu-btn">👥 Kelola Pengguna</button></li>
-                <li><button onclick="switchTab('resep')" id="btn-resep" class="w-full text-left px-4 py-3 hover:bg-gray-800 rounded-lg text-gray-300 hover:text-white transition font-medium menu-btn">🥗 Kelola Resep Menu</button></li>
-                <li><button onclick="switchTab('transaksi')" id="btn-transaksi" class="w-full text-left px-4 py-3 hover:bg-gray-800 rounded-lg text-gray-300 hover:text-white transition font-medium menu-btn">💳 Transaksi & Paket</button></li>
-                <li><button onclick="switchTab('laporan')" id="btn-laporan" class="w-full text-left px-4 py-3 hover:bg-gray-800 rounded-lg text-gray-300 hover:text-white transition font-medium menu-btn">📈 Laporan Gizi</button></li>
-                <li><button onclick="switchTab('pengaturan')" id="btn-pengaturan" class="w-full text-left px-4 py-3 hover:bg-gray-800 rounded-lg text-gray-300 hover:text-white transition font-medium menu-btn">⚙️ Pengaturan</button></li>
+            <ul class="space-y-1 px-4" id="menuList">
+                <li><button onclick="switchTab('dashboard')" id="btn-dashboard" class="w-full text-left px-5 py-3.5 bg-utama/20 text-utama rounded-xl font-bold transition menu-btn">📊 Ringkasan</button></li>
+                <li><button onclick="switchTab('pengguna')" id="btn-pengguna" class="w-full text-left px-5 py-3.5 hover:bg-white/5 rounded-xl text-slate-400 hover:text-white transition font-medium menu-btn">👥 Database Pengguna</button></li>
+                <li><button onclick="switchTab('resep')" id="btn-resep" class="w-full text-left px-5 py-3.5 hover:bg-white/5 rounded-xl text-slate-400 hover:text-white transition font-medium menu-btn">🥗 Data Resep</button></li>
             </ul>
         </nav>
-        <div class="p-4 border-t border-gray-800">
-            <button onclick="handleLogout()" class="block w-full text-center px-4 py-2 bg-red-600 rounded-lg text-white font-bold hover:bg-red-700 transition">🚪 Logout</button>
+        <div class="p-6 border-t border-white/10">
+            <button onclick="handleLogout()" class="w-full py-3 bg-red-500/10 text-red-500 rounded-xl font-bold hover:bg-red-500 hover:text-white transition">🚪 Logout</button>
         </div>
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 flex flex-col h-screen overflow-hidden">
-        <!-- Topbar -->
-        <header class="h-16 bg-white shadow-sm flex items-center justify-between px-8 z-10 border-b border-gray-200">
-            <h2 id="pageTitle" class="text-xl font-bold text-gray-800">Ringkasan Dashboard</h2>
-            <div class="flex items-center space-x-4">
-                <span class="text-sm font-medium text-gray-600">Halo, Admin Syawal</span>
-                <div class="w-10 h-10 bg-utama text-white rounded-full flex items-center justify-center font-bold shadow-sm">S</div>
+    <main class="flex-1 flex flex-col h-screen">
+        <header class="h-20 bg-white/80 backdrop-blur-md shadow-sm flex items-center justify-between px-10 border-b border-slate-100 z-10">
+            <h2 id="pageTitle" class="text-2xl font-bold text-gelap tracking-tight">Ringkasan Sistem</h2>
+            <div class="flex items-center gap-3">
+                <span class="text-sm font-bold text-slate-500">Syawal Maulana</span>
+                <div class="w-10 h-10 bg-gradient-to-br from-utama to-emerald-700 text-white rounded-full flex items-center justify-center font-bold shadow-md">SM</div>
             </div>
         </header>
 
-        <!-- Area Konten Dinamis -->
-        <div class="flex-1 overflow-y-auto p-4 md:p-8 relative">
+        <div class="flex-1 overflow-y-auto p-10">
             
-            <!-- Konten 1: Dashboard -->
+            <!-- Tab 1: Dashboard -->
             <div id="content-dashboard" class="content-section">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-l-utama">
-                        <div class="text-gray-500 text-sm font-semibold mb-1">Total Pengguna</div>
-                        <div class="text-3xl font-extrabold text-gray-800">1,248</div>
+                <div class="grid grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-center">
+                        <span class="text-slate-400 text-sm font-bold uppercase">Total Pengguna</span>
+                        <span id="stat-pengguna" class="text-4xl font-black text-gelap mt-2">0</span>
                     </div>
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-l-aksen">
-                        <div class="text-gray-500 text-sm font-semibold mb-1">Paket Aktif</div>
-                        <div class="text-3xl font-extrabold text-gray-800">856</div>
-                    </div>
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-l-blue-500">
-                        <div class="text-gray-500 text-sm font-semibold mb-1">Pendapatan Bulan Ini</div>
-                        <div class="text-3xl font-extrabold text-gray-800">Rp 45.2 Jt</div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-center">
+                        <span class="text-slate-400 text-sm font-bold uppercase">Total Resep Aktif</span>
+                        <span id="stat-resep" class="text-4xl font-black text-gelap mt-2">0</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Konten 2: Kelola Pengguna -->
+            <!-- Tab 2: Pengguna (CRUD Database Simulasi) -->
             <div id="content-pengguna" class="content-section hidden">
-                <div class="bg-white p-8 rounded-2xl shadow-sm">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Daftar Pengguna GiziPro</h3>
-                    <p class="text-gray-600 mb-4">Modul ini digunakan untuk menambah, mengedit, dan memblokir akses pengguna.</p>
-                    <div class="bg-gray-100 p-10 rounded-lg border-dashed border-2 border-gray-300 text-center text-gray-500">Tabel Data Pengguna (Belum Terhubung ke Database)</div>
-                </div>
-            </div>
-
-            <!-- Konten 3: Kelola Resep Menu -->
-            <div id="content-resep" class="content-section hidden">
-                <div class="bg-white p-8 rounded-2xl shadow-sm">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Katalog Resep & Menu Diet</h3>
-                    <button class="bg-utama text-white px-4 py-2 rounded-md mb-4">+ Tambah Resep Baru</button>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="p-4 border rounded-lg">Salad Ayam Dada (Tinggi Protein)</div>
-                        <div class="p-4 border rounded-lg">Smoothie Pisang Bayam (Rendah Kalori)</div>
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold">Data Pengguna</h3>
+                        <form onsubmit="addUser(event)" class="flex gap-2">
+                            <input type="text" id="newUserName" placeholder="Nama User Baru" class="px-4 py-2 border rounded-lg bg-slate-50" required>
+                            <button type="submit" class="bg-gelap text-white px-4 py-2 rounded-lg font-bold hover:bg-utama transition">+ Tambah</button>
+                        </form>
                     </div>
+                    <table class="w-full text-left border-collapse">
+                        <thead><tr class="text-slate-400 text-sm border-b"><th class="py-3">ID</th><th>Nama</th><th>Aksi</th></tr></thead>
+                        <tbody id="userTableBody" class="divide-y divide-slate-100"></tbody>
+                    </table>
                 </div>
             </div>
 
-            <!-- Konten 4: Transaksi & Paket -->
-            <div id="content-transaksi" class="content-section hidden">
-                <div class="bg-white p-8 rounded-2xl shadow-sm">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Riwayat Transaksi</h3>
-                    <p class="text-gray-600 mb-4">Persetujuan pembayaran dan riwayat pembelian paket fitur.</p>
-                    <div class="bg-gray-100 p-10 rounded-lg border-dashed border-2 border-gray-300 text-center text-gray-500">Log Transaksi Payment Gateway</div>
-                </div>
-            </div>
-
-            <!-- Konten 5: Laporan Gizi -->
-            <div id="content-laporan" class="content-section hidden">
-                <div class="bg-white p-8 rounded-2xl shadow-sm">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Statistik Kesehatan Pengguna</h3>
-                    <p class="text-gray-600">Analisis rata-rata BMI dan pencapaian target kalori harian dari seluruh pengguna aktif.</p>
-                </div>
-            </div>
-
-            <!-- Konten 6: Pengaturan -->
-            <div id="content-pengaturan" class="content-section hidden">
-                <div class="bg-white p-8 rounded-2xl shadow-sm max-w-lg">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Pengaturan Akun Admin</h3>
-                    <label class="block text-gray-700 font-bold mb-2 mt-4">Username</label>
-                    <input type="text" value="syawal" class="w-full px-4 py-2 border rounded bg-gray-100" disabled>
-                    <label class="block text-gray-700 font-bold mb-2 mt-4">Ubah Password</label>
-                    <input type="password" placeholder="Masukkan password baru" class="w-full px-4 py-2 border rounded">
-                    <button class="mt-4 bg-utama text-white px-6 py-2 rounded">Simpan Perubahan</button>
+            <!-- Tab 3: Resep (CRUD Database Simulasi) -->
+            <div id="content-resep" class="content-section hidden">
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold">Data Resep Diet</h3>
+                        <form onsubmit="addRecipe(event)" class="flex gap-2">
+                            <input type="text" id="newRecipeName" placeholder="Nama Menu Resep" class="px-4 py-2 border rounded-lg bg-slate-50" required>
+                            <button type="submit" class="bg-utama text-white px-4 py-2 rounded-lg font-bold hover:bg-emerald-700 transition">+ Tambah</button>
+                        </form>
+                    </div>
+                    <table class="w-full text-left border-collapse">
+                        <thead><tr class="text-slate-400 text-sm border-b"><th class="py-3">Menu Resep</th><th>Aksi</th></tr></thead>
+                        <tbody id="recipeTableBody" class="divide-y divide-slate-100"></tbody>
+                    </table>
                 </div>
             </div>
 
@@ -124,37 +93,87 @@
     </main>
 
     <script>
-        // Logika untuk berpindah tab antar menu di sidebar
-        function switchTab(tabId) {
-            // Sembunyikan semua konten
-            document.querySelectorAll('.content-section').forEach(el => el.classList.add('hidden'));
-            // Tampilkan konten yang dipilih
-            document.getElementById('content-' + tabId).classList.remove('hidden');
+        // --- LOGIKA SIMULASI DATABASE MENGGUNAKAN LOCAL STORAGE ---
+        
+        // Inisialisasi Data Kosong jika belum ada
+        if(!localStorage.getItem('db_users')) localStorage.setItem('db_users', JSON.stringify([{id: 1, name: 'Budi Santoso'}]));
+        if(!localStorage.getItem('db_recipes')) localStorage.setItem('db_recipes', JSON.stringify(['Salad Dada Ayam', 'Smoothie Bayam']));
 
-            // Reset gaya tombol menu
-            document.querySelectorAll('.menu-btn').forEach(btn => {
-                btn.classList.remove('bg-utama', 'text-white', 'shadow-md', 'font-bold');
-                btn.classList.add('hover:bg-gray-800', 'text-gray-300', 'font-medium');
-            });
+        // Fungsi Render Data ke Tabel
+        function renderData() {
+            const users = JSON.parse(localStorage.getItem('db_users'));
+            const recipes = JSON.parse(localStorage.getItem('db_recipes'));
             
-            // Set gaya aktif ke tombol yang diklik
-            const activeBtn = document.getElementById('btn-' + tabId);
-            activeBtn.classList.remove('hover:bg-gray-800', 'text-gray-300', 'font-medium');
-            activeBtn.classList.add('bg-utama', 'text-white', 'shadow-md', 'font-bold');
+            // Update Statistik Dashboard
+            document.getElementById('stat-pengguna').innerText = users.length;
+            document.getElementById('stat-resep').innerText = recipes.length;
 
-            // Ubah Judul Header berdasarkan Tab
-            const titles = {
-                'dashboard': 'Ringkasan Dashboard', 'pengguna': 'Kelola Pengguna',
-                'resep': 'Manajemen Resep', 'transaksi': 'Data Transaksi',
-                'laporan': 'Laporan Sistem', 'pengaturan': 'Pengaturan Web'
-            };
+            // Render Tabel Pengguna
+            document.getElementById('userTableBody').innerHTML = users.map((u, i) => `
+                <tr class="hover:bg-slate-50"><td class="py-4 font-medium text-slate-500">#USR-${u.id}</td><td class="font-bold">${u.name}</td>
+                <td><button onclick="deleteUser(${i})" class="text-red-500 hover:bg-red-50 px-3 py-1 rounded">Hapus</button></td></tr>
+            `).join('');
+
+            // Render Tabel Resep
+            document.getElementById('recipeTableBody').innerHTML = recipes.map((r, i) => `
+                <tr class="hover:bg-slate-50"><td class="py-4 font-bold">${r}</td>
+                <td><button onclick="deleteRecipe(${i})" class="text-red-500 hover:bg-red-50 px-3 py-1 rounded">Hapus</button></td></tr>
+            `).join('');
+        }
+
+        // Fungsi Tambah Pengguna
+        function addUser(e) {
+            e.preventDefault();
+            const users = JSON.parse(localStorage.getItem('db_users'));
+            const name = document.getElementById('newUserName').value;
+            users.push({ id: Date.now().toString().slice(-4), name });
+            localStorage.setItem('db_users', JSON.stringify(users));
+            document.getElementById('newUserName').value = '';
+            renderData();
+        }
+
+        // Fungsi Tambah Resep
+        function addRecipe(e) {
+            e.preventDefault();
+            const recipes = JSON.parse(localStorage.getItem('db_recipes'));
+            recipes.push(document.getElementById('newRecipeName').value);
+            localStorage.setItem('db_recipes', JSON.stringify(recipes));
+            document.getElementById('newRecipeName').value = '';
+            renderData();
+        }
+
+        // Fungsi Hapus
+        function deleteUser(index) {
+            const users = JSON.parse(localStorage.getItem('db_users'));
+            users.splice(index, 1);
+            localStorage.setItem('db_users', JSON.stringify(users));
+            renderData();
+        }
+        function deleteRecipe(index) {
+            const recipes = JSON.parse(localStorage.getItem('db_recipes'));
+            recipes.splice(index, 1);
+            localStorage.setItem('db_recipes', JSON.stringify(recipes));
+            renderData();
+        }
+
+        // Panggil render saat pertama kali dimuat
+        renderData();
+
+        // --- LOGIKA UI TABS ---
+        function switchTab(tabId) {
+            document.querySelectorAll('.content-section').forEach(el => el.classList.add('hidden'));
+            document.getElementById('content-' + tabId).classList.remove('hidden');
+            document.querySelectorAll('.menu-btn').forEach(btn => {
+                btn.className = "w-full text-left px-5 py-3.5 hover:bg-white/5 rounded-xl text-slate-400 hover:text-white transition font-medium menu-btn";
+            });
+            const active = document.getElementById('btn-' + tabId);
+            active.className = "w-full text-left px-5 py-3.5 bg-utama/20 text-utama rounded-xl font-bold transition menu-btn";
+            const titles = { 'dashboard': 'Ringkasan Sistem', 'pengguna': 'Database Pengguna', 'resep': 'Database Resep' };
             document.getElementById('pageTitle').innerText = titles[tabId];
         }
 
-        // Logika untuk Logout
         function handleLogout() {
-            sessionStorage.removeItem('isLoggedIn'); // Hapus sesi
-            window.location.href = 'index.html'; // Kembali ke Landing Page
+            sessionStorage.removeItem('isLoggedIn'); window.location.href = 'index.html';
         }
     </script>
 </body>
