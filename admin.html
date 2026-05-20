@@ -3,89 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - GiziPro</title>
+    <title>Dashboard Analitik - GiziPro</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Library Chart.js untuk Grafik -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         if (sessionStorage.getItem('isLoggedIn') !== 'true') window.location.href = 'login.html';
         tailwind.config = { theme: { extend: { colors: { utama: '#10b981', gelap: '#0f172a', terang: '#f8fafc' } } } }
     </script>
 </head>
-<body class="bg-terang font-sans flex h-screen overflow-hidden text-slate-800">
+<body class="bg-slate-50 font-sans flex h-screen overflow-hidden text-slate-800">
     
     <!-- Sidebar -->
     <aside class="w-72 bg-gelap text-white flex flex-col shadow-2xl z-20">
         <div class="h-20 flex items-center px-8 border-b border-white/10">
-            <h1 class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-utama to-emerald-400">GiziPro <span class="text-xs text-slate-400 align-top">Panel</span></h1>
+            <h1 class="text-2xl font-extrabold text-white">Gizi<span class="text-utama">Pro</span></h1>
         </div>
         <nav class="flex-1 overflow-y-auto py-6">
-            <ul class="space-y-1 px-4" id="menuList">
-                <li><button onclick="switchTab('dashboard')" id="btn-dashboard" class="w-full text-left px-5 py-3.5 bg-utama/20 text-utama rounded-xl font-bold transition menu-btn">📊 Ringkasan</button></li>
-                <li><button onclick="switchTab('pengguna')" id="btn-pengguna" class="w-full text-left px-5 py-3.5 hover:bg-white/5 rounded-xl text-slate-400 hover:text-white transition font-medium menu-btn">👥 Database Pengguna</button></li>
-                <li><button onclick="switchTab('resep')" id="btn-resep" class="w-full text-left px-5 py-3.5 hover:bg-white/5 rounded-xl text-slate-400 hover:text-white transition font-medium menu-btn">🥗 Data Resep</button></li>
+            <ul class="space-y-1 px-4 text-sm font-medium" id="menuList">
+                <li class="px-5 py-2 text-slate-500 uppercase tracking-wider text-xs font-bold">Main Menu</li>
+                <li><button onclick="switchTab('dashboard')" id="btn-dashboard" class="w-full text-left px-5 py-3.5 bg-utama/20 text-utama rounded-xl transition menu-btn">📊 Visualisasi Data</button></li>
+                
+                <li class="px-5 py-2 mt-4 text-slate-500 uppercase tracking-wider text-xs font-bold">Manajemen</li>
+                <li><button onclick="switchTab('resep')" id="btn-resep" class="w-full text-left px-5 py-3.5 hover:bg-white/5 rounded-xl text-slate-400 hover:text-white transition menu-btn">🥗 Master Resep (Live)</button></li>
+                <li><button onclick="switchTab('pengguna')" id="btn-pengguna" class="w-full text-left px-5 py-3.5 hover:bg-white/5 rounded-xl text-slate-400 hover:text-white transition menu-btn">👥 Data Pengguna</button></li>
+                
+                <li class="px-5 py-2 mt-4 text-slate-500 uppercase tracking-wider text-xs font-bold">Sistem</li>
+                <li><button class="w-full text-left px-5 py-3.5 hover:bg-white/5 rounded-xl text-slate-400 hover:text-white transition opacity-50 cursor-not-allowed">⚙️ Konfigurasi (WIP)</button></li>
             </ul>
         </nav>
         <div class="p-6 border-t border-white/10">
-            <button onclick="handleLogout()" class="w-full py-3 bg-red-500/10 text-red-500 rounded-xl font-bold hover:bg-red-500 hover:text-white transition">🚪 Logout</button>
+            <button onclick="handleLogout()" class="w-full py-3 bg-white/5 rounded-xl font-bold hover:bg-red-500 transition border border-white/10">Logout Sesi</button>
         </div>
     </aside>
 
     <!-- Main Content -->
     <main class="flex-1 flex flex-col h-screen">
-        <header class="h-20 bg-white/80 backdrop-blur-md shadow-sm flex items-center justify-between px-10 border-b border-slate-100 z-10">
-            <h2 id="pageTitle" class="text-2xl font-bold text-gelap tracking-tight">Ringkasan Sistem</h2>
-            <div class="flex items-center gap-3">
-                <span class="text-sm font-bold text-slate-500">Syawal Maulana</span>
-                <div class="w-10 h-10 bg-gradient-to-br from-utama to-emerald-700 text-white rounded-full flex items-center justify-center font-bold shadow-md">SM</div>
+        <header class="h-20 bg-white shadow-sm flex items-center justify-between px-10 border-b border-slate-200 z-10">
+            <h2 id="pageTitle" class="text-2xl font-bold text-gelap">Dashboard Analitik</h2>
+            <div class="flex items-center gap-4">
+                <a href="index.html" target="_blank" class="text-sm font-bold text-utama hover:underline mr-4">Lihat Web ↗</a>
+                <div class="text-right leading-tight">
+                    <div class="text-sm font-bold text-gelap">Admin Syawal</div>
+                    <div class="text-xs text-slate-500">Data Scientist</div>
+                </div>
+                <div class="w-10 h-10 bg-gelap text-white rounded-full flex items-center justify-center font-bold">S</div>
             </div>
         </header>
 
-        <div class="flex-1 overflow-y-auto p-10">
+        <div class="flex-1 overflow-y-auto p-8 bg-slate-50">
             
-            <!-- Tab 1: Dashboard -->
-            <div id="content-dashboard" class="content-section">
-                <div class="grid grid-cols-3 gap-6">
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-center">
-                        <span class="text-slate-400 text-sm font-bold uppercase">Total Pengguna</span>
-                        <span id="stat-pengguna" class="text-4xl font-black text-gelap mt-2">0</span>
+            <!-- Tab 1: Dashboard Chart -->
+            <div id="content-dashboard" class="content-section space-y-6">
+                <!-- KPI Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 border-l-4 border-l-utama">
+                        <span class="text-slate-400 text-xs font-bold uppercase">Total Menu Resep</span>
+                        <div class="text-4xl font-black text-gelap mt-2" id="kpi-resep">0</div>
                     </div>
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-center">
-                        <span class="text-slate-400 text-sm font-bold uppercase">Total Resep Aktif</span>
-                        <span id="stat-resep" class="text-4xl font-black text-gelap mt-2">0</span>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 border-l-4 border-l-blue-500">
+                        <span class="text-slate-400 text-xs font-bold uppercase">Traffic Pengguna Baru</span>
+                        <div class="text-4xl font-black text-gelap mt-2">1,204</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 border-l-4 border-l-yellow-500">
+                        <span class="text-slate-400 text-xs font-bold uppercase">Konversi Paket Pro</span>
+                        <div class="text-4xl font-black text-gelap mt-2">68%</div>
+                    </div>
+                </div>
+                <!-- Chart Area -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                    <h3 class="font-bold text-gelap mb-4">Tren Penggunaan Fitur Gizi (Mingguan)</h3>
+                    <div class="w-full h-72">
+                        <canvas id="myChart"></canvas>
                     </div>
                 </div>
             </div>
 
-            <!-- Tab 2: Pengguna (CRUD Database Simulasi) -->
-            <div id="content-pengguna" class="content-section hidden">
-                <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-xl font-bold">Data Pengguna</h3>
-                        <form onsubmit="addUser(event)" class="flex gap-2">
-                            <input type="text" id="newUserName" placeholder="Nama User Baru" class="px-4 py-2 border rounded-lg bg-slate-50" required>
-                            <button type="submit" class="bg-gelap text-white px-4 py-2 rounded-lg font-bold hover:bg-utama transition">+ Tambah</button>
-                        </form>
-                    </div>
-                    <table class="w-full text-left border-collapse">
-                        <thead><tr class="text-slate-400 text-sm border-b"><th class="py-3">ID</th><th>Nama</th><th>Aksi</th></tr></thead>
-                        <tbody id="userTableBody" class="divide-y divide-slate-100"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Tab 3: Resep (CRUD Database Simulasi) -->
+            <!-- Tab 2: Resep (CRUD Kompleks) -->
             <div id="content-resep" class="content-section hidden">
                 <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-xl font-bold">Data Resep Diet</h3>
-                        <form onsubmit="addRecipe(event)" class="flex gap-2">
-                            <input type="text" id="newRecipeName" placeholder="Nama Menu Resep" class="px-4 py-2 border rounded-lg bg-slate-50" required>
-                            <button type="submit" class="bg-utama text-white px-4 py-2 rounded-lg font-bold hover:bg-emerald-700 transition">+ Tambah</button>
-                        </form>
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gelap">Database Menu Resep</h3>
+                            <p class="text-sm text-slate-500">Data yang ditambah di sini akan langsung ter-render di Landing Page.</p>
+                        </div>
                     </div>
-                    <table class="w-full text-left border-collapse">
-                        <thead><tr class="text-slate-400 text-sm border-b"><th class="py-3">Menu Resep</th><th>Aksi</th></tr></thead>
-                        <tbody id="recipeTableBody" class="divide-y divide-slate-100"></tbody>
-                    </table>
+                    
+                    <!-- Form Tambah -->
+                    <form onsubmit="addRecipe(event)" class="bg-slate-50 p-6 rounded-2xl mb-8 border border-slate-200 grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Nama Menu</label>
+                            <input type="text" id="rName" class="w-full px-4 py-2 border rounded-lg focus:ring-1 focus:ring-utama" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Kalori</label>
+                            <input type="text" id="rCal" placeholder="Contoh: 300 kcal" class="w-full px-4 py-2 border rounded-lg focus:ring-1 focus:ring-utama" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Kategori</label>
+                            <select id="rType" class="w-full px-4 py-2 border rounded-lg focus:ring-1 focus:ring-utama">
+                                <option>Vegan</option>
+                                <option>Tinggi Protein</option>
+                                <option>Rendah Karbo</option>
+                                <option>Minuman Sehat</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="bg-utama text-white px-4 py-2 rounded-lg font-bold hover:bg-emerald-700 transition h-10 shadow-md">Simpan ke DB</button>
+                    </form>
+
+                    <!-- Tabel -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm border-collapse">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-500">
+                                    <th class="p-4 rounded-tl-lg">ID</th>
+                                    <th class="p-4">Nama Menu</th>
+                                    <th class="p-4">Kalori</th>
+                                    <th class="p-4">Kategori</th>
+                                    <th class="p-4 rounded-tr-lg text-right">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recipeTableBody" class="divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Pengguna (Simple CRUD) -->
+            <div id="content-pengguna" class="content-section hidden">
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+                    <h3 class="text-2xl font-bold text-gelap mb-6">Master Pengguna</h3>
+                    <div class="bg-slate-100 rounded-xl p-10 text-center border-2 border-dashed border-slate-300">
+                        <span class="text-4xl mb-4 block">🛠️</span>
+                        <p class="text-slate-500 font-medium">Modul pengguna sedang dalam optimasi struktur database.</p>
+                    </div>
                 </div>
             </div>
 
@@ -93,88 +144,112 @@
     </main>
 
     <script>
-        // --- LOGIKA SIMULASI DATABASE MENGGUNAKAN LOCAL STORAGE ---
-        
-        // Inisialisasi Data Kosong jika belum ada
-        if(!localStorage.getItem('db_users')) localStorage.setItem('db_users', JSON.stringify([{id: 1, name: 'Budi Santoso'}]));
-        if(!localStorage.getItem('db_recipes')) localStorage.setItem('db_recipes', JSON.stringify(['Salad Dada Ayam', 'Smoothie Bayam']));
+        // --- 1. LOGIKA DATABASE LOCALSTORAGE (Versi Lengkap) ---
+        function renderRecipes() {
+            let db = localStorage.getItem('db_recipes_v2');
+            let recipes = [];
+            if(db) {
+                recipes = JSON.parse(db);
+            } else {
+                // Data dummy jika kosong
+                recipes = [
+                    { id: Date.now(), name: "Salad Sayur Super", cal: "300 kcal", type: "Vegan" },
+                    { id: Date.now()+1, name: "Dada Ayam Panggang", cal: "450 kcal", type: "Tinggi Protein" }
+                ];
+                localStorage.setItem('db_recipes_v2', JSON.stringify(recipes));
+            }
 
-        // Fungsi Render Data ke Tabel
-        function renderData() {
-            const users = JSON.parse(localStorage.getItem('db_users'));
-            const recipes = JSON.parse(localStorage.getItem('db_recipes'));
-            
-            // Update Statistik Dashboard
-            document.getElementById('stat-pengguna').innerText = users.length;
-            document.getElementById('stat-resep').innerText = recipes.length;
+            document.getElementById('kpi-resep').innerText = recipes.length;
 
-            // Render Tabel Pengguna
-            document.getElementById('userTableBody').innerHTML = users.map((u, i) => `
-                <tr class="hover:bg-slate-50"><td class="py-4 font-medium text-slate-500">#USR-${u.id}</td><td class="font-bold">${u.name}</td>
-                <td><button onclick="deleteUser(${i})" class="text-red-500 hover:bg-red-50 px-3 py-1 rounded">Hapus</button></td></tr>
-            `).join('');
-
-            // Render Tabel Resep
-            document.getElementById('recipeTableBody').innerHTML = recipes.map((r, i) => `
-                <tr class="hover:bg-slate-50"><td class="py-4 font-bold">${r}</td>
-                <td><button onclick="deleteRecipe(${i})" class="text-red-500 hover:bg-red-50 px-3 py-1 rounded">Hapus</button></td></tr>
+            const tbody = document.getElementById('recipeTableBody');
+            tbody.innerHTML = recipes.map((r, i) => `
+                <tr class="hover:bg-slate-50 transition group">
+                    <td class="p-4 text-slate-400 font-mono text-xs">#${String(r.id).slice(-5)}</td>
+                    <td class="p-4 font-bold text-gelap">${r.name}</td>
+                    <td class="p-4 font-medium text-slate-600">${r.cal}</td>
+                    <td class="p-4"><span class="bg-emerald-100 text-utama text-xs px-2 py-1 rounded-md font-bold">${r.type}</span></td>
+                    <td class="p-4 text-right">
+                        <button onclick="deleteRecipe(${i})" class="text-red-500 bg-red-50 hover:bg-red-500 hover:text-white px-3 py-1.5 rounded-md font-bold transition text-xs opacity-0 group-hover:opacity-100">Hapus</button>
+                    </td>
+                </tr>
             `).join('');
         }
 
-        // Fungsi Tambah Pengguna
-        function addUser(e) {
-            e.preventDefault();
-            const users = JSON.parse(localStorage.getItem('db_users'));
-            const name = document.getElementById('newUserName').value;
-            users.push({ id: Date.now().toString().slice(-4), name });
-            localStorage.setItem('db_users', JSON.stringify(users));
-            document.getElementById('newUserName').value = '';
-            renderData();
-        }
-
-        // Fungsi Tambah Resep
         function addRecipe(e) {
             e.preventDefault();
-            const recipes = JSON.parse(localStorage.getItem('db_recipes'));
-            recipes.push(document.getElementById('newRecipeName').value);
-            localStorage.setItem('db_recipes', JSON.stringify(recipes));
-            document.getElementById('newRecipeName').value = '';
-            renderData();
+            const recipes = JSON.parse(localStorage.getItem('db_recipes_v2'));
+            const newData = {
+                id: Date.now(),
+                name: document.getElementById('rName').value,
+                cal: document.getElementById('rCal').value,
+                type: document.getElementById('rType').value
+            };
+            recipes.push(newData);
+            localStorage.setItem('db_recipes_v2', JSON.stringify(recipes));
+            
+            // Reset form
+            document.getElementById('rName').value = '';
+            document.getElementById('rCal').value = '';
+            
+            renderRecipes();
         }
 
-        // Fungsi Hapus
-        function deleteUser(index) {
-            const users = JSON.parse(localStorage.getItem('db_users'));
-            users.splice(index, 1);
-            localStorage.setItem('db_users', JSON.stringify(users));
-            renderData();
-        }
         function deleteRecipe(index) {
-            const recipes = JSON.parse(localStorage.getItem('db_recipes'));
-            recipes.splice(index, 1);
-            localStorage.setItem('db_recipes', JSON.stringify(recipes));
-            renderData();
+            if(confirm('Yakin ingin menghapus resep ini? Ia akan hilang dari Landing Page.')) {
+                const recipes = JSON.parse(localStorage.getItem('db_recipes_v2'));
+                recipes.splice(index, 1);
+                localStorage.setItem('db_recipes_v2', JSON.stringify(recipes));
+                renderRecipes();
+            }
         }
 
-        // Panggil render saat pertama kali dimuat
-        renderData();
+        // Panggil render tabel
+        renderRecipes();
 
-        // --- LOGIKA UI TABS ---
+        // --- 2. LOGIKA TABS ---
         function switchTab(tabId) {
             document.querySelectorAll('.content-section').forEach(el => el.classList.add('hidden'));
             document.getElementById('content-' + tabId).classList.remove('hidden');
+            
             document.querySelectorAll('.menu-btn').forEach(btn => {
-                btn.className = "w-full text-left px-5 py-3.5 hover:bg-white/5 rounded-xl text-slate-400 hover:text-white transition font-medium menu-btn";
+                btn.className = "w-full text-left px-5 py-3.5 hover:bg-white/5 rounded-xl text-slate-400 hover:text-white transition menu-btn";
             });
             const active = document.getElementById('btn-' + tabId);
-            active.className = "w-full text-left px-5 py-3.5 bg-utama/20 text-utama rounded-xl font-bold transition menu-btn";
-            const titles = { 'dashboard': 'Ringkasan Sistem', 'pengguna': 'Database Pengguna', 'resep': 'Database Resep' };
+            active.className = "w-full text-left px-5 py-3.5 bg-utama/20 text-utama rounded-xl transition menu-btn";
+            
+            const titles = { 'dashboard': 'Dashboard Analitik', 'resep': 'Manajemen Resep', 'pengguna': 'Data Pengguna' };
             document.getElementById('pageTitle').innerText = titles[tabId];
         }
 
         function handleLogout() {
             sessionStorage.removeItem('isLoggedIn'); window.location.href = 'index.html';
         }
+
+        // --- 3. CHART.JS (Simulasi Dashboard Analitik) ---
+        const ctx = document.getElementById('myChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+                datasets: [{
+                    label: 'Pengguna Kalkulator BMI',
+                    data: [120, 190, 150, 220, 200, 310, 280],
+                    borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    borderWidth: 3, tension: 0.4, fill: true
+                },
+                {
+                    label: 'Pencarian Resep',
+                    data: [80, 120, 110, 160, 140, 250, 220],
+                    borderColor: '#fbbf24', backgroundColor: 'transparent',
+                    borderWidth: 3, tension: 0.4, borderDash: [5, 5]
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { position: 'top' } },
+                scales: { y: { beginAtZero: true, grid: { borderDash: [2, 4], color: '#e2e8f0' } }, x: { grid: { display: false } } }
+            }
+        });
     </script>
 </body>
 </html>
